@@ -17,10 +17,10 @@ import AddPostScreen from '../screens/addpost';
 import ProfileScreen from '../screens/profile';
 
 // screen names
-const feedName = 'Feed';
-const addFriendsName = 'Add Friends';
-const addPostName = 'Post';
-const profileName = 'Profile';
+const feedName : string = 'Feed';
+const addFriendsName : string = 'Add Friends';
+const addPostName : string = 'Post';
+const profileName : string = 'Profile';
 
 const Tab = createBottomTabNavigator();
 

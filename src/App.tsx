@@ -8,7 +8,7 @@
 import * as React from 'react'
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { NavigationBar } from './components/navigation';
+import { NavigationBar } from './navigation/navigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import SettingsScreen from './screens/settings';
