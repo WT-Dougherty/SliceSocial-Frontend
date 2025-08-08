@@ -7,12 +7,22 @@ import Post from '../components/common/post';
 import { PostType } from '../types/post';
 import { samplePost } from '../assets/SamplePosts';
 
+// sample posts
+let SAMPLE_POSTS: Array<PostType> = Array.from({ length: 3 }, (_, i) => ({
+    ...samplePost,
+    postID: i.toString()
+}));
+
 function FeedScreen() {
-    let posts : Array<PostType> = new Array(3).fill(samplePost);
+    React.useEffect(() => {
+        console.log(SAMPLE_POSTS);
+    }, []);
+
+    
 
     return (
         <ScrollView style={styles.feed} >
-            { posts.map((post : PostType) => (
+            { SAMPLE_POSTS.map((post : PostType) => (
                 <Post post={post} key={post.postID} />
             )) }
         </ScrollView>
