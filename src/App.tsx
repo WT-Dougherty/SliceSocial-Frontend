@@ -11,6 +11,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { NavigationBar } from './navigation/navigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import 'react-native-gesture-handler';
+import 'react-native-reanimated';
+
 import SettingsScreen from './screens/settings';
 const settingsName : string = 'Settings';
 

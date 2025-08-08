@@ -1,6 +1,9 @@
 import * as React from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 
+// component import
+import Comment from './Comment.tsx';
+
 // type declarations
 import type { PostType, CommentType } from '../../types/post.ts';
 type PostBodyParams = {
@@ -8,26 +11,16 @@ type PostBodyParams = {
 };
 
 // components
+// takes an array of 3 comments as input
 function CommentPreview({ comments } : PostBodyParams ) {
     return (
-        <View>
-            ;
-        </View>
+      <View>
+        { comments.map((comment : CommentType) => (
+          <Comment key={comment.commentID} comment={comment} />
+        ))}
+      </View>
     )
 }
-
-// styles
-const styles = StyleSheet.create({
-  commentPreview: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  comment: {
-    width: 300,
-    height: 400,
-    resizeMode: 'cover',
-  }
-});
 
 // final export
 export default CommentPreview;

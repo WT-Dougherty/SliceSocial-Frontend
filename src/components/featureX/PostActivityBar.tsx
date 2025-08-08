@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react';
-import { View, Pressable, StyleSheet, Text } from 'react-native';
+import { View, Pressable, StyleSheet, Button } from 'react-native';
 
 import LikeIcon from '../../assets/icons/LikeIcon.svg'
 import CommentIcon from '../../assets/icons/CommentIcon.svg'
@@ -13,12 +13,7 @@ function PostActivityBar() {
         // TODO: API PUSH
     }
     function onCommentPress() {
-        console.log("press");
-        return (
-            <Text style={{fontSize: 100}} >
-                Hello!
-            </Text>
-        );
+        ;
     }
 
     return (

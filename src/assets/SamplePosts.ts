@@ -13,7 +13,37 @@ export const samplePost : PostType = {
     comments: [
         {
             commentID: '0',
-            body: "Nice Post!",
+            body: "Comment 1!",
+            date: {
+                day: "06",
+                month: "August",
+                year: "2025"
+            },
+            username: "Stan"
+        },
+        {
+            commentID: '1',
+            body: "Comment 2!",
+            date: {
+                day: "06",
+                month: "August",
+                year: "2025"
+            },
+            username: "Stan"
+        },
+        {
+            commentID: '2',
+            body: "Comment 3!",
+            date: {
+                day: "06",
+                month: "August",
+                year: "2025"
+            },
+            username: "Stan"
+        },
+        {
+            commentID: '3',
+            body: "Comment 4!",
             date: {
                 day: "06",
                 month: "August",

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {StyleSheet, ScrollView} from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 
 import Post from '../components/common/post';
 

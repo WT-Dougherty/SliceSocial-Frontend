@@ -5,6 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import PostHeader from '../featureX/PostHeader.tsx';
 import PostBody from '../featureX/PostBody.tsx';
 import PostActivityBar from '../featureX/PostActivityBar.tsx';
+import CommentPreview from '../featureX/CommentPreview.tsx';
 
 // type declarations
 import { PostType, DateType } from '../../types/post.ts';
@@ -14,14 +15,16 @@ type PostParams = {
 
 // component
 function Post( { post } : PostParams ) {
-    return (
-        <View style={styles.postStyle} >
-            <PostHeader username={post.username} date={post.date} />
-            <PostBody body={post.body} />
-            <PostActivityBar />
-            {/* Add More Parts Here */}
-        </View>
-    )
+
+  return (
+      <View style={styles.postStyle} >
+          <PostHeader username={post.username} date={post.date} />
+          <PostBody body={post.body} />
+          <PostActivityBar />
+          <CommentPreview comments={post.comments.slice(-3)} />
+          {/* Add More Parts Here */}
+      </View>
+  )
 }
 
 // styles
