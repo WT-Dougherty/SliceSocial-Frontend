@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { StyleSheet, ScrollView } from 'react-native';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import Post from '../components/common/post';
 
@@ -18,14 +19,14 @@ function FeedScreen() {
         console.log(SAMPLE_POSTS);
     }, []);
 
-    
-
     return (
-        <ScrollView style={styles.feed} >
-            { SAMPLE_POSTS.map((post : PostType) => (
-                <Post post={post} key={post.postID} />
-            )) }
-        </ScrollView>
+        <BottomSheetModalProvider>
+            <ScrollView style={styles.feed} >
+                { SAMPLE_POSTS.map((post : PostType) => (
+                    <Post post={post} key={post.postID} />
+                )) }
+            </ScrollView>
+        </BottomSheetModalProvider>
     )
 }
 

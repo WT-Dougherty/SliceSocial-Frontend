@@ -20,7 +20,7 @@ function Post( { post } : PostParams ) {
       <View style={styles.postStyle} >
           <PostHeader username={post.username} date={post.date} />
           <PostBody body={post.body} />
-          <PostActivityBar />
+          <PostActivityBar comments={post.comments}/>
           <CommentPreview comments={post.comments.slice(-3)} />
           {/* Add More Parts Here */}
       </View>
