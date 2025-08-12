@@ -1,14 +1,16 @@
 // general
+import { StyleSheet } from 'react-native';
 import * as React from 'react'
+import { BlurView } from '@react-native-community/blur';
 
 // navigation and react markups
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // icons
-import FeedIcon from '../assets/icons/FeedIcon.svg'
-import AddFriendsIcon from '../assets/icons/AddFriendsIcon.svg'
-import AddPostIcon from '../assets/icons/AddPostIcon.svg'
-import ProfileIcon from '../assets/icons/ProfileIcon.svg'
+import FeedIcon from '../assets/icons/FeedIcon.svg';
+import AddFriendsIcon from '../assets/icons/AddFriendsIcon.svg';
+import AddPostIcon from '../assets/icons/AddPostIcon.svg';
+import ProfileIcon from '../assets/icons/ProfileIcon.tsx';
 
 // screens
 import FeedScreen from '../screens/feed';
@@ -25,12 +27,16 @@ const profileName : string = 'Profile';
 const Tab = createBottomTabNavigator();
 
 export function NavigationBar() {
+  const ProfilePhoto: string = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
     return (
       <Tab.Navigator
       initialRouteName={feedName}
       screenOptions={({route}) => ({
+        header: () => <AppHeader />,
         headerShown: true,
-        tabBarShowLabel: true,
+        headerTransparent: true,
+        tabBarShowLabel: false,
+        tabBarIconStyle: {marginTop: 8},
         tabBarActiveTintColor: "black",
         tabBarInactiveTintColor: "grey",
         tabBarIcon: ({ color, size }) => {
@@ -43,9 +49,16 @@ export function NavigationBar() {
             case addPostName:
               return <AddPostIcon {...iconProps} />;
             case profileName:
-              return <ProfileIcon {...iconProps} />;
+              return <ProfileIcon width={size} clr={color} photoUri={ProfilePhoto} />;
           }
-        }
+        },
+        tabBarStyle: {
+          position: 'absolute',
+          backgroundColor: 'transparent',
+        },
+        tabBarBackground: () => (
+          <BlurView blurType="materialLight" style={styles.bars} />
+        ),
       })}
       >
         <Tab.Screen name={feedName} component={FeedScreen} />
@@ -55,3 +68,19 @@ export function NavigationBar() {
       </Tab.Navigator>
     );
 }
+
+function AppHeader() {
+  return (
+    <BlurView blurType='materialLight' style={styles.bars} >
+    </BlurView>
+  )
+}
+
+const styles = StyleSheet.create({
+  bars: {
+    flex: 1,
+    backgroundColor: 'rgba(175, 175, 175, 0.08)',
+    height: 80,
+    borderBottomWidth: 0,
+  },
+})

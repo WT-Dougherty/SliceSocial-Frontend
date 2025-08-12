@@ -19,14 +19,16 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name={'Main Tabs'} component={NavigationBar} />
-          <Stack.Screen name={settingsName} component={SettingsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </GestureHandlerRootView>
+    <React.StrictMode>
+      <GestureHandlerRootView style={styles.baseStyling}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name={'Main Tabs'} component={NavigationBar} />
+            <Stack.Screen name={settingsName} component={SettingsScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </React.StrictMode>
   );
 }
 
@@ -34,6 +36,10 @@ const styles = StyleSheet.create({
   screens: {
     color: "black",
     justifyContent: "center",
+  },
+  baseStyling: {
+    flex: 1,
+    fontFamily: "HelveticaNeue-Medium"
   }
 });
 

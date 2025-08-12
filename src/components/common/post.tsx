@@ -21,7 +21,7 @@ function Post( { post } : PostParams ) {
           <PostHeader username={post.username} date={post.date} />
           <PostBody body={post.body} />
           <PostActivityBar comments={post.comments}/>
-          <CommentPreview comments={post.comments.slice(-3)} />
+          <CommentPreview comments={post.comments.slice(-2)} />
           {/* Add More Parts Here */}
       </View>
   )
@@ -33,9 +33,11 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 20,
     marginBottom: 20,
-    borderStyle: "dotted",
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: "red"
+    borderColor: "silver",
+    padding: 5,
+    borderRadius: 10,
   }
 });
 

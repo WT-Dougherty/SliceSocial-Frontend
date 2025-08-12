@@ -1,5 +1,7 @@
 import * as React from 'react'
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
+
+import ProfileIcon from '../../assets/icons/ProfileIcon.tsx';
 
 // type declarations
 import type { DateType } from '../../types/post.ts';
@@ -10,12 +12,14 @@ type PostHeaderParams = {
 
 // component
 function PostHeader({ username, date } : PostHeaderParams ) {
-    return (
-        <View style={styles.postHeader} >
-            <Text style={styles.username} >{username}</Text>
-            <Text style={styles.date} >{date.month + ' ' + date.day + ' ' + date.year}</Text>
-        </View>
-    )
+  const ProfilePhoto: string = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+  return (
+    <View style={styles.postHeader} >
+      <ProfileIcon photoUri={ProfilePhoto} width={28} clr={'grey'} />
+      <Text style={styles.username} >{username}</Text>
+      <Text style={styles.date} >{date.month + ' ' + date.day + ', ' + date.year}</Text>
+    </View>
+  );
 }
 
 // styles
@@ -23,16 +27,18 @@ const styles = StyleSheet.create({
   postHeader: {
     display: 'flex',
     flexDirection: 'row',
-    margin: 8
+    alignItems: 'center',
+    margin: 8,
+    marginLeft: 10,
   },
   username: {
-    margin: 3,
-    marginRight: 10
+    marginHorizontal: 10,
+    fontFamily: "HelveticaNeue-Medium",
+    fontSize: 16,
   },
   date: {
-    margin: 3,
-    marginRight: 10,
-    fontSize: 10,
+    fontFamily: "HelveticaNeue-UltraLight",
+    fontSize: 8,
   }
 });
 

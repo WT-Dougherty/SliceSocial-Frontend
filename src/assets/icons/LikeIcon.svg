@@ -1,6 +1,2 @@
-<svg height="264.0mm" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 748.44 748.44" width="264.0mm" xml:space="preserve">
-<defs />
-<g id="Layer-1">
-<path d="M34.02 374.22C34.02 186.333 186.333 34.02 374.22 34.02C562.107 34.02 714.42 186.333 714.42 374.22C714.42 562.107 562.107 714.42 374.22 714.42C186.333 714.42 34.02 562.107 34.02 374.22Z" fill="" fill-rule="nonzero" opacity="1" stroke="#4a4a4a" stroke-linecap="butt" stroke-linejoin="round" stroke-width="50" />
-</g>
+<svg width="1200pt" height="1200pt" viewBox="0 0 1200 1200"> <path d="M600 1100 C 200 800, 40 640, 40 430 C 40 260, 170 130, 370 130 C 490 130, 570 190, 600 270 C 630 190, 710 130, 830 130 C 1030 130, 1160 260, 1160 430 C 1160 640, 1000 800, 600 1100 Z" stroke='' stroke-width="60" stroke-linecap="round" stroke-linejoin="round" />
 </svg>

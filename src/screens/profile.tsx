@@ -9,7 +9,7 @@ function ProfileScreen() {
     const navigation = useNavigation();
 
     return (
-        <View>
+        <View style={styles.profile} >
             <Text>Profile</Text>
             <Button onPress={() => navigation.navigate(settingsName)}>
                 Settings
@@ -17,5 +17,12 @@ function ProfileScreen() {
         </View>
     )
 }
+
+// styles
+const styles = StyleSheet.create({
+  profile: {
+    paddingTop: 80
+  }
+});
 
 export default ProfileScreen;

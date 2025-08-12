@@ -13,8 +13,8 @@ function Comment({ comment } : CommentParams) {
     return (
         <View style={styles.comment} >
             <View style={styles.header} >
-                <Text>{comment.username}</Text>
-                <Text style={styles.date} >{date.month + ' ' + date.day + ' ' + date.year}</Text>
+                <Text style={styles.username} >{comment.username}</Text>
+                <Text style={styles.date} >{date.month + ' ' + date.day + ', ' + date.year}</Text>
             </View>
             <Text style={styles.body} >{comment.body}</Text>
         </View>
@@ -25,17 +25,29 @@ function Comment({ comment } : CommentParams) {
 const styles = StyleSheet.create({
   comment: {
     display: 'flex',
-    margin: 10
+    margin: 10,
+    marginLeft: 16,
   },
   header: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: "center",
+  },
+  username: {
+    fontFamily: "HelveticaNeue",
+    fontSize: 15,
   },
   date: {
-    fontSize: 10,
-    marginLeft: 10
+    marginLeft: 10,
+    fontFamily: "HelveticaNeue-UltraLight",
+    fontSize: 8,
   },
-  body: {}
+  body: {
+    marginTop: 5,
+    marginLeft: 16,
+    fontFamily: "HelveticaNeue-Light",
+    fontSize: 14,
+  }
 });
 
 // final export

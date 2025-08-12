@@ -2,7 +2,7 @@ import { PostType } from "../types/post";
 
 export const samplePost : PostType = {
     postID: '0',
-    username: "Will",
+    username: "willdougherty",
     date: {
         day: "06",
         month: "August",
@@ -19,7 +19,7 @@ export const samplePost : PostType = {
                 month: "August",
                 year: "2025"
             },
-            username: "Stan"
+            username: "stan1234"
         },
         {
             commentID: '1',
@@ -29,7 +29,7 @@ export const samplePost : PostType = {
                 month: "August",
                 year: "2025"
             },
-            username: "Stan"
+            username: "stan1234"
         },
         {
             commentID: '2',
@@ -39,7 +39,7 @@ export const samplePost : PostType = {
                 month: "August",
                 year: "2025"
             },
-            username: "Stan"
+            username: "stan1234"
         },
         {
             commentID: '3',
@@ -49,7 +49,7 @@ export const samplePost : PostType = {
                 month: "August",
                 year: "2025"
             },
-            username: "Stan"
+            username: "stan1234"
         }
     ]
 };

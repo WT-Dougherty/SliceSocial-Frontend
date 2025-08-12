@@ -32,7 +32,10 @@ function FeedScreen() {
 
 // styles
 const styles = StyleSheet.create({
-  feed: {}
+  feed: {
+    flex: 1,
+    marginVertical: 80,
+  }
 });
 
 export default FeedScreen;

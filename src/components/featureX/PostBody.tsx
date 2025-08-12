@@ -2,7 +2,6 @@ import * as React from 'react'
 import { View, Image, Text, StyleSheet } from 'react-native';
 
 // type declarations
-import type { PostType } from '../../types/post.ts';
 type PostBodyParams = {
     body: string
 };
@@ -23,9 +22,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   image: {
-    width: 300,
-    height: 400,
+    width: 350,
+    height: 437.5,
     resizeMode: 'cover',
+    borderRadius: 2,
   }
 });
 

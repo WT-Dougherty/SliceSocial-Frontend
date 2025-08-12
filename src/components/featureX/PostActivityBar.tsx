@@ -1,17 +1,20 @@
 import * as React from 'react'
 import { useState, useCallback, useMemo, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet, Button } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import {
   BottomSheetModal,
   BottomSheetScrollView,
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
 
-import LikeIcon from '../../assets/icons/LikeIcon.svg'
+// icons
 import CommentIcon from '../../assets/icons/CommentIcon.svg'
+import LikeButton from './LikeButton';
 
+// comment popup
 import CommentPreview from './CommentPreview';
 
+// type defs
 import { CommentType } from '../../types/post';
 type PostActivityBarParams = {
     comments: Array<CommentType>
@@ -20,33 +23,22 @@ type PostActivityBarParams = {
 function PostActivityBar({ comments } : PostActivityBarParams) {
 
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-    const [like, setLike] = useState(false);
 
     // snap points
-    const snapPoints = useMemo(() => ['80%'], []);
+    const snapPoints = useMemo(() => ['70%', '90%'], []);
 
     // callbacks
     const openComments = useCallback(() => {
         bottomSheetModalRef.current?.present();
-    }, []);
-    const closeComments = useCallback(() => {
-        bottomSheetModalRef.current?.dismiss();
     }, []);
 
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
     }, []);
 
-    function onLikePress() {
-        setLike(!like);
-        // TODO: API PUSH
-    }
-
     return (
         <View style={styles.activityBar} >
-            <Pressable onPress={onLikePress} style={styles.button} >
-                <LikeIcon width={25} height={25} fill={like ? "#ff4a4aff" : "#f2f2f2ff"} />
-            </Pressable>
+            <LikeButton />
             <Pressable onPress={openComments} style={styles.button} >
                 <CommentIcon width={25} height={25} fill={"#4a4a4a"} />
             </Pressable>
@@ -55,16 +47,18 @@ function PostActivityBar({ comments } : PostActivityBarParams) {
             ref={bottomSheetModalRef}
             onChange={handleSheetChanges}
             snapPoints={snapPoints}
-            index={1}
+            index={0}
             backdropComponent={(props) => (
-                <BottomSheetBackdrop {...props} pressBehavior="none" disappearsOnIndex={-1} />
+                <BottomSheetBackdrop {...props} pressBehavior="close" opacity={0.1} appearsOnIndex={0} disappearsOnIndex={-1} />
             )}
             >
                 <BottomSheetScrollView
-                contentContainerStyle={styles.commentContainerStyle}>
-                    <Text style={styles.commentHeader} >Comment Section</Text>
+                contentContainerStyle={styles.commentContainerStyle}
+                stickyHeaderIndices={[0]}>
+                    <View style={styles.commentContainerHeader} >
+                        <Text style={styles.commentHeader} >Comments</Text>
+                    </View>
                     <CommentPreview comments={comments} />
-                    <Button title='Close Comments' onPress={closeComments} />
                 </BottomSheetScrollView>
             </BottomSheetModal>
         </View>
@@ -74,7 +68,8 @@ function PostActivityBar({ comments } : PostActivityBarParams) {
 // styles
 const styles = StyleSheet.create({
   activityBar: {
-    margin: 5,
+    margin: 10,
+    marginLeft: 12,
     display: "flex",
     flexDirection: "row"
   },
@@ -82,7 +77,10 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   commentHeader: {
-    fontSize: 20
+    fontFamily: "HelveticaNeue",
+    fontSize: 20,
+    marginBottom: 10,
+
   },
   commentContainerStyle: {
     flex: 1,
@@ -90,6 +88,11 @@ const styles = StyleSheet.create({
     margin: 25,
     marginTop: 0,
   },
+  commentContainerHeader: {
+    width: '100%',
+    height: 50,
+    backgroundColor: 'white',
+},
 });
 
 export default PostActivityBar;
