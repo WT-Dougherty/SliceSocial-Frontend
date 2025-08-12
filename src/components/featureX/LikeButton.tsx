@@ -16,8 +16,8 @@ function LikeButton() {
             <LikeIcon
             width={27}
             height={27}
-            fill={like ? '#f2f2f2ff' : '#ff8080ff'}
-            stroke={like ? '#4a4a4a' : '#ff8080ff'}
+            fill={like ? '#ff8080ff' : '#f2f2f2ff'}
+            stroke={like ? '#ff8080ff' : '#4a4a4a'}
             />
         </Pressable>
 

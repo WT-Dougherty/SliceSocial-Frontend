@@ -13,17 +13,25 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import SettingsScreen from './screens/settings';
-const settingsName : string = 'Settings';
+import Login from './screens/login.tsx';
+import CreateAccount from './screens/createAccount.tsx';
 
+const settingsName : string = 'Settings';
+const loginName : string = 'Login'
+const createAccountName : string = 'CreateAccount'
+
+import { rootNavigationRef } from './navigation/navigationRef.ts';
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <React.StrictMode>
       <GestureHandlerRootView style={styles.baseStyling}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name={'Main Tabs'} component={NavigationBar} />
+        <NavigationContainer ref={rootNavigationRef}>
+          <Stack.Navigator initialRouteName={loginName} screenOptions={{ headerShown: false }}>
+            <Stack.Screen name={loginName} component={Login} />
+            <Stack.Screen name={createAccountName} component={CreateAccount} />
+            <Stack.Screen name={'MainTabs'} component={NavigationBar} />
             <Stack.Screen name={settingsName} component={SettingsScreen} />
           </Stack.Navigator>
         </NavigationContainer>

@@ -25,7 +25,7 @@ function PostActivityBar({ comments } : PostActivityBarParams) {
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
     // snap points
-    const snapPoints = useMemo(() => ['70%', '90%'], []);
+    const snapPoints = useMemo(() => ['70%', '75%'], []);
 
     // callbacks
     const openComments = useCallback(() => {

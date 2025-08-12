@@ -19,10 +19,10 @@ import AddPostScreen from '../screens/addpost';
 import ProfileScreen from '../screens/profile';
 
 // screen names
-const feedName : string = 'Feed';
-const addFriendsName : string = 'Add Friends';
-const addPostName : string = 'Post';
-const profileName : string = 'Profile';
+import { feedName } from './navigationRef.ts';
+import { addFriendsName } from './navigationRef.ts';
+import { addPostName } from './navigationRef.ts';
+import { profileName } from './navigationRef.ts';
 
 const Tab = createBottomTabNavigator();
 
@@ -79,7 +79,7 @@ function AppHeader() {
 const styles = StyleSheet.create({
   bars: {
     flex: 1,
-    backgroundColor: 'rgba(175, 175, 175, 0.08)',
+    backgroundColor: 'rgba(77, 77, 77, 0.37)',
     height: 80,
     borderBottomWidth: 0,
   },
