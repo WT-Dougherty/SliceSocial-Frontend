@@ -1,8 +1,15 @@
 import * as React from 'react'
 import { useState, useCallback } from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity, TextInputChangeEvent } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+
+import { APICreateProfile } from '../lib/APIOps/APIOpsProfile'
+
+import { GenerateID } from '../lib/util/utilityfunctions';
 
 // type defs
+import { ProfileType } from '../types/profile';
+import { DateType } from '../types/post';
 type QuestionParams = {
     question: string,
     placeholder: string,
@@ -10,7 +17,12 @@ type QuestionParams = {
     secureTextEntry: boolean,
     stateSet: React.Dispatch<React.SetStateAction<any>>,
 };
+type BirthdayParams = {
+    value?: DateType,
+    stateSet: React.Dispatch<React.SetStateAction<DateType | undefined>>,
+}
 
+// helper functions
 function Question({question, placeholder, value, secureTextEntry, stateSet} : QuestionParams) {
     return (
         <View style={styles.questionView} >
@@ -28,16 +40,48 @@ function Question({question, placeholder, value, secureTextEntry, stateSet} : Qu
         </View>
     );
 }
+function BirthdayInput({value, stateSet} : BirthdayParams) {
+    const [day, setDay] = useState<number | ''>('');
+    const [month, setMonth] = useState<number | ''>('');
+    const [year, setYear] = useState<number | ''>('');
+
+    const days = Array.from({ length: 31 }, (_, i) => i + 1);
+    const months = Array.from({ length: 12 }, (_, i) => i + 1);
+    const currentYear = new Date().getFullYear();
+    const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
+
+    return (
+        <View>
+            <Text style={[{marginTop: 20}, styles.question]}>Enter Your Birthday</Text>
+            {/* TODO: IMPLEMENT BIRTHDAY SELECTOR */}
+        </View>
+    )
+}
 
 function CreateAccount(): React.JSX.Element {
     const [email, setEmail] = useState('');
-    const [birthday, setBirthday] = useState('');
+    const [birthday, setBirthday] = useState<DateType>();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
     function onCreateAccountPress() {
         console.log('email: ', email);
+
+        // sample static profile for backend dev
+        const newProfile : ProfileType = {
+            profileID: GenerateID(),
+            username: username,
+            password: password,
+            birthday: {day: '18', month: '06', year: '2002'},
+            email: 'will@gmail.com',
+            followers: [],
+            following: [],
+            followerCount: 0,
+            followingCount: 0,
+            posts: []
+        }
+        APICreateProfile(newProfile);
     }
 
     return (
@@ -75,8 +119,7 @@ function CreateAccount(): React.JSX.Element {
                 autoCapitalize='none'
                 autoCorrect={false}
                 />
-
-
+                <BirthdayInput value={birthday} stateSet={setBirthday} />
                 <TouchableOpacity onPress={onCreateAccountPress}>
                     <Text style={styles.createAccount} >Create New Account</Text>
                 </TouchableOpacity>
@@ -113,7 +156,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        marginVertical: 10,
+        marginTop: 20,
     },
 
     question: {
@@ -137,6 +180,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     createAccount: {
+        marginVertical: 20,
         fontFamily: 'HelveticaNeue-Medium',
         color: 'blue'
     }
