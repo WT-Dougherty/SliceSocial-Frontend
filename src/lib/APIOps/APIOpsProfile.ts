@@ -22,3 +22,19 @@ export async function APICreateProfile(newProfile : ProfileType) {
     }
     return "Status: success";
 }
+
+// HTTP GET sent to /userprofiles
+export async function API_GET(userID : string) {
+  const API_BASE_URL = 'https://pdckckk8kf.execute-api.us-east-1.amazonaws.com/CRUDOps/Schedules';
+  let data;
+
+  try{
+    const response = await fetch( `${API_BASE_URL}?username=${userID}` )
+    data = await response.json()
+    console.log("API GET Successful. Data: ", data);
+  } catch(err) {
+    console.error("API GET Failed. Error Code: ", err);
+  }
+
+  return data;
+}
