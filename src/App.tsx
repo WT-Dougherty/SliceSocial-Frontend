@@ -8,19 +8,19 @@
 import * as React from 'react'
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { NavigationBar } from './navigation/navigation';
+import { NavigationBar } from './frontend/navigation/navigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import SettingsScreen from './screens/settings';
-import Login from './screens/login.tsx';
-import CreateAccount from './screens/createAccount.tsx';
+import SettingsScreen from './frontend/screens/settings';
+import Login from './frontend/screens/login.tsx';
+import CreateAccount from './frontend/screens/createAccount.tsx';
 
 const settingsName : string = 'Settings';
 const loginName : string = 'Login'
 const createAccountName : string = 'CreateAccount'
 
-import { rootNavigationRef } from './navigation/navigationRef.ts';
+import { rootNavigationRef } from './frontend/navigation/navigationRef.ts';
 const Stack = createNativeStackNavigator();
 
 function App() {

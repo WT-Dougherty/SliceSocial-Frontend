@@ -3,9 +3,9 @@ import { useState, useCallback } from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity, TextInputChangeEvent } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { APICreateProfile } from '../lib/APIOps/APIOpsProfile'
+import { APICreateProfile } from '../../backend/APIOpsProfile'
 
-import { GenerateID } from '../lib/util/utilityfunctions';
+import { GenerateID } from '../util/utilityfunctions';
 
 // type defs
 import { ProfileType } from '../types/profile';

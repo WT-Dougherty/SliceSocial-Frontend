@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 // type imports
-import { ProfileType } from '../../types/profile'
+import { ProfileType } from '../frontend/types/profile'
 
 // API endpoints
 const INVOKE_URL = 'https://xsqio3ul1k.execute-api.us-east-2.amazonaws.com/development/userprofiles';
