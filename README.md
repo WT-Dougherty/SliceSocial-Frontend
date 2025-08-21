@@ -107,4 +107,6 @@ To learn more about React Native, take a look at the following resources:
 
 
 Clear Metro Bundler Cache:
+```sh
 npm start -- --reset-cache
+```

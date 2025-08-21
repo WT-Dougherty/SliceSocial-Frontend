@@ -1,11 +1,9 @@
 import * as React from 'react'
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity, TextInputChangeEvent } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { SelectList } from 'react-native-dropdown-select-list';
 
-import { APICreateProfile } from '../../backend/APIOpsProfile'
-
-import { GenerateID } from '../util/utilityfunctions';
+import { ValidateDate } from '../util/utilityfunctions';
 
 // type defs
 import { ProfileType } from '../types/profile';
@@ -18,7 +16,6 @@ type QuestionParams = {
     stateSet: React.Dispatch<React.SetStateAction<any>>,
 };
 type BirthdayParams = {
-    value?: DateType,
     stateSet: React.Dispatch<React.SetStateAction<DateType | undefined>>,
 }
 
@@ -40,22 +37,75 @@ function Question({question, placeholder, value, secureTextEntry, stateSet} : Qu
         </View>
     );
 }
-function BirthdayInput({value, stateSet} : BirthdayParams) {
-    const [day, setDay] = useState<number | ''>('');
-    const [month, setMonth] = useState<number | ''>('');
-    const [year, setYear] = useState<number | ''>('');
+function BirthdayInput({stateSet} : BirthdayParams) {
+    const [day, setDay] = useState("");
+    const [month, setMonth] = useState("");
+    const [year, setYear] = useState("");
+    
+    const days : Array<{key:string, value:string}> = [];
+    for (let i=1; i<=31; i++) {
+        days.push({key: i.toString(), value: i.toString()});
+    }
+    const months = [
+        {key:'1', value:'January'},
+        {key:'2', value:'February'},
+        {key:'3', value:'March'},
+        {key:'4', value:'April'},
+        {key:'5', value:'May'},
+        {key:'6', value:'June'},
+        {key:'7', value:'July'},
+        {key:'8', value:'August'},
+        {key:'9', value:'September'},
+        {key:'10', value:'October'},
+        {key:'11', value:'November'},
+        {key:'12', value:'December'},
+    ];
+    const years : Array<{key:string, value:string}> = [];
+    for (let i=1910; i<=2020; i++) {
+        years.push({key: (i-1909).toString(), value: i.toString()});
+    }
 
-    const days = Array.from({ length: 31 }, (_, i) => i + 1);
-    const months = Array.from({ length: 12 }, (_, i) => i + 1);
-    const currentYear = new Date().getFullYear();
-    const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
+    useEffect(() => {
+        stateSet( {day, month, year} );
+    }, [day, month, year]);
 
     return (
-        <View>
-            <Text style={[{marginTop: 20}, styles.question]}>Enter Your Birthday</Text>
-            {/* TODO: IMPLEMENT BIRTHDAY SELECTOR */}
+        <View style={styles.birthdayInputContainer} >
+            <SelectList 
+                setSelected={(d : string) => setMonth(d)}
+                placeholder='month'
+                search={false}
+                data={months} 
+                save="value"
+                fontFamily='HelveticaNeue-Light'
+                boxStyles={styles.birthdayInputBox}
+                inputStyles={month ? {color: 'black'} : {color: 'silver'}}
+
+            />
+            <SelectList 
+                setSelected={(d : string) => setDay(d)}
+                placeholder='day'
+                search={true}
+                searchicon={<Text></Text>}
+                data={days} 
+                save="value"
+                fontFamily='HelveticaNeue-Light'
+                boxStyles={styles.birthdayInputBox}
+                inputStyles={day ? {color: 'black'} : {color: 'silver'}}
+            />
+            <SelectList 
+                setSelected={(d : string) => setYear(d)}
+                placeholder='year'
+                search={true}
+                searchicon={<Text></Text>}
+                data={years} 
+                save="value"
+                fontFamily='HelveticaNeue-Light'
+                boxStyles={styles.birthdayInputBox}
+                inputStyles={year ? {color: 'black'} : {color: 'silver'}}
+            />
         </View>
-    )
+    );
 }
 
 function CreateAccount(): React.JSX.Element {
@@ -67,13 +117,15 @@ function CreateAccount(): React.JSX.Element {
 
     function onCreateAccountPress() {
         console.log('email: ', email);
+        console.log('birthday: ', birthday);
+        console.log('valid date? ', ValidateDate(birthday? birthday : {day: '18', month: 'June', year: '2002'}))
 
         // sample static profile for backend dev
         const newProfile : ProfileType = {
-            profileID: GenerateID(),
+            profileID: 'mutable',
             username: username,
             password: password,
-            birthday: {day: '18', month: '06', year: '2002'},
+            birthday: {day: '18', month: 'June', year: '2002'},
             email: 'will@gmail.com',
             followers: [],
             following: [],
@@ -81,7 +133,7 @@ function CreateAccount(): React.JSX.Element {
             followingCount: 0,
             posts: []
         }
-        APICreateProfile(newProfile);
+        // API CALL
     }
 
     return (
@@ -119,7 +171,10 @@ function CreateAccount(): React.JSX.Element {
                 autoCapitalize='none'
                 autoCorrect={false}
                 />
-                <BirthdayInput value={birthday} stateSet={setBirthday} />
+                <View style={styles.questionView} >
+                    <Text style={styles.question} >Enter Your Birthday</Text>
+                    <BirthdayInput stateSet={setBirthday} />
+                </View>
                 <TouchableOpacity onPress={onCreateAccountPress}>
                     <Text style={styles.createAccount} >Create New Account</Text>
                 </TouchableOpacity>
@@ -139,7 +194,7 @@ const styles = StyleSheet.create({
     header: {
         fontFamily: 'HelveticaNeue-Bold',
         fontSize: 24,
-        marginVertical: 36,
+        marginVertical: 56,
     },
     createBox: {
         display: 'flex',
@@ -178,6 +233,21 @@ const styles = StyleSheet.create({
         fontFamily: 'HelveticaNeue-Italic',
         marginTop: 16,
         marginBottom: 5,
+    },
+    birthdayInputContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '80%',
+        justifyContent: 'space-between',
+    },
+    birthdayInputBox: {
+        fontSize: 14,
+        borderColor: 'grey',
+        borderWidth: 1,
+        borderRadius: 3,
+        paddingVertical: 2,
+        paddingHorizontal: 10,
+        marginVertical: 10,
     },
     createAccount: {
         marginVertical: 20,
