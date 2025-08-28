@@ -1,9 +1,12 @@
 import * as React from 'react'
-import { useState, useEffect, useCallback } from 'react';
-import { Text, View, TextInput, StyleSheet, TouchableOpacity, TextInputChangeEvent } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 
-import { ValidateDate } from '../util/utilityfunctions';
+import { ValidateEmail, ValidateUsername, ValidatePassword, ValidateDate } from '../util/newAccInputValidate';
+import { apiCreateAccount } from '../services/api/endpoints/createAccount';
+import BackArrow from '../components/common/backArrow';
+import { rootNavigationRef } from '../navigation/navigationRef';
 
 // type defs
 import { ProfileType } from '../types/profile';
@@ -16,7 +19,7 @@ type QuestionParams = {
     stateSet: React.Dispatch<React.SetStateAction<any>>,
 };
 type BirthdayParams = {
-    stateSet: React.Dispatch<React.SetStateAction<DateType | undefined>>,
+    stateSet: React.Dispatch<React.SetStateAction<DateType>>,
 }
 
 // helper functions
@@ -66,13 +69,13 @@ function BirthdayInput({stateSet} : BirthdayParams) {
     }
 
     useEffect(() => {
-        stateSet( {day, month, year} );
+        stateSet( {day: day, month: month, year: year} );
     }, [day, month, year]);
 
     return (
         <View style={styles.birthdayInputContainer} >
             <SelectList 
-                setSelected={(d : string) => setMonth(d)}
+                setSelected={(d : string | undefined) => setMonth(d ?? "")}
                 placeholder='month'
                 search={false}
                 data={months} 
@@ -83,7 +86,7 @@ function BirthdayInput({stateSet} : BirthdayParams) {
 
             />
             <SelectList 
-                setSelected={(d : string) => setDay(d)}
+                setSelected={(d : string | undefined) => setDay(d ?? "")}
                 placeholder='day'
                 search={true}
                 searchicon={<Text></Text>}
@@ -94,7 +97,7 @@ function BirthdayInput({stateSet} : BirthdayParams) {
                 inputStyles={day ? {color: 'black'} : {color: 'silver'}}
             />
             <SelectList 
-                setSelected={(d : string) => setYear(d)}
+                setSelected={(d: string | undefined) => setYear(d ?? "")}
                 placeholder='year'
                 search={true}
                 searchicon={<Text></Text>}
@@ -110,34 +113,62 @@ function BirthdayInput({stateSet} : BirthdayParams) {
 
 function CreateAccount(): React.JSX.Element {
     const [email, setEmail] = useState('');
-    const [birthday, setBirthday] = useState<DateType>();
+    const [birthday, setBirthday] = useState<DateType>({day: '', month: '', year: ''});
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [status, setStatus] = useState('');
 
     function onCreateAccountPress() {
+        // input validation for email
+        if (!ValidateEmail(email? email : '')) {
+            setStatus('Please Enter a Valid Email');
+            return;
+        }
         console.log('email: ', email);
-        console.log('birthday: ', birthday);
-        console.log('valid date? ', ValidateDate(birthday? birthday : {day: '18', month: 'June', year: '2002'}))
 
-        // sample static profile for backend dev
+        // input validation for username
+        if (!ValidateUsername(username? username : '')) {
+            setStatus('Please Enter a Valid Username');
+            return;
+        }
+        console.log('username: ', username);
+
+        // input validation for password
+        if (!ValidatePassword(password? password : '')) {
+            setStatus('Please Enter a Valid Password');
+            return;
+        }
+        if (password !== confirmPassword) {
+            setStatus('Your Passwords Do Not Match');
+            return;
+        }
+        console.log('password: ', password);
+
+        // input validation for birthday
+        if (!ValidateDate(birthday? birthday : {day: 'I', month: 'Want', year: 'Burger'})) {
+            setStatus('Please Enter a Valid Birthday');
+            return;
+        }
+        console.log('birthday: ', birthday);
+
+        // construct profile object
         const newProfile : ProfileType = {
-            profileID: 'mutable',
+            userID: '',
+            email: email,
             username: username,
             password: password,
-            birthday: {day: '18', month: 'June', year: '2002'},
-            email: 'will@gmail.com',
-            followers: [],
-            following: [],
-            followerCount: 0,
-            followingCount: 0,
-            posts: []
+            birthday: birthday,
+            follows: 0,
+            follow_list: []
         }
         // API CALL
+        apiCreateAccount(newProfile, setStatus)
     }
 
     return (
         <View style={styles.createPage} >
+            <BackArrow onPress={() => rootNavigationRef.goBack()}/>
             <Text style={styles.header} >Create New Account</Text>
             <View style={styles.createBox} >
                 <Question
@@ -178,6 +209,7 @@ function CreateAccount(): React.JSX.Element {
                 <TouchableOpacity onPress={onCreateAccountPress}>
                     <Text style={styles.createAccount} >Create New Account</Text>
                 </TouchableOpacity>
+                <Text style={[{color: 'firebrick'}, styles.question]}>{status}</Text>
             </View>
         </View>
     )
@@ -188,7 +220,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         width: '100%',
         height: '100%',
-        marginTop: '20%',
+        marginTop: '28%',
         alignItems: 'center'
     },
     header: {

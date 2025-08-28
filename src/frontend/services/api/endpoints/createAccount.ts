@@ -6,19 +6,16 @@ import { Alert } from "react-native"
 // type imports
 import { HttpMethod, RequestOptions } from "../types/request"
 import { TokenBody } from "../types/response"
+import { ProfileType } from "../../../types/profile"
 
-export async function apiLogin(
-    username : string,
-    password: string,
+export async function apiCreateAccount(
+    userProfile : ProfileType,
     setError : React.Dispatch<React.SetStateAction<string>>)
 {
     const requestOptions : RequestOptions = {
         method: "POST" as HttpMethod,
-        path: "/auth/login",
-        body: {
-            username: username,
-            password: password
-        }
+        path: "/users/create",
+        body: userProfile,
     }
     try {
         request(requestOptions)
@@ -28,7 +25,7 @@ export async function apiLogin(
             else {
                 const tokenBody : TokenBody = res;
                 setAccessToken(tokenBody.access_token);
-                rootNavigationRef.navigate('MainTabs', { screen: 'Feed' });
+                rootNavigationRef.navigate('MainTabs', { screen: 'Profile' });
             }
         }).catch(e => console.log(e));
     } catch (err) {

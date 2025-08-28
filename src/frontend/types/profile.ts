@@ -1,7 +1,12 @@
 import { DateType, PostType } from "./post"
 
+// DB BlockSize: 8 bytes
+// profile ID: 16 char
+// username: 24 char
+// password: 32 char max
+// email: 254 char
 export interface ProfileType {
-    profileID: string,
+    userID: string,
     username: string,
     password: string,
     birthday: DateType,
@@ -10,10 +15,6 @@ export interface ProfileType {
     profilePicture?: string,
     bio?: string,
 
-    followers: Array<string>,
-    following: Array<string>,
-    followerCount: number,
-    followingCount: number,
-
-    posts: Array<string>,
+    follows: number,
+    follow_list: Array<string>,
 };

@@ -1,14 +1,16 @@
 import * as React from 'react'
+import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { rootNavigationRef } from '../navigation/navigationRef';
+import { apiLogin } from '../services/api/endpoints/login';
 
 function Login() {
-    const [username, onChangeUsername] = React.useState('');
-    const [password, onChangePassword] = React.useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [status, setStatus] = useState('');
 
     function onLoginPress() {
-        // TODO: API Work
-        rootNavigationRef.navigate('MainTabs', { screen: 'Feed' });
+        apiLogin(username, password, setStatus);
     }
     function onCreateAccountPress() {
         rootNavigationRef.navigate('CreateAccount')
@@ -20,7 +22,7 @@ function Login() {
             <View style={styles.loginBox} >
                 <TextInput
                 style={styles.loginInput}
-                onChangeText={onChangeUsername}
+                onChangeText={setUsername}
                 value={username}
                 placeholder='username'
                 placeholderTextColor={'silver'}
@@ -29,7 +31,7 @@ function Login() {
                 <TextInput
                 style={styles.loginInput}
                 secureTextEntry={true}
-                onChangeText={onChangePassword}
+                onChangeText={setPassword}
                 value={password}
                 placeholder='password'
                 placeholderTextColor={'silver'}
@@ -43,6 +45,7 @@ function Login() {
             <TouchableOpacity onPress={onCreateAccountPress}>
                 <Text style={styles.pressable} >Create New Account</Text>
             </TouchableOpacity>
+            <Text style={[{color: 'firebrick'}, styles.text]}>{status}</Text>
         </View>
     )
 }
