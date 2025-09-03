@@ -28,6 +28,7 @@ export async function apiLogin(
             else {
                 const tokenBody : TokenBody = res;
                 setAccessToken(tokenBody.access_token);
+                console.log("Login Successful");
                 rootNavigationRef.navigate('MainTabs', { screen: 'Feed' });
             }
         }).catch(e => console.log(e));

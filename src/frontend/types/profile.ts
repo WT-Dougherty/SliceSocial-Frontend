@@ -16,5 +16,14 @@ export interface ProfileType {
     bio?: string,
 
     follows: number,
-    follow_list: Array<string>,
+    follow_list?: Array<string>,
+};
+
+export const EmptyProfile : ProfileType = {
+    userID: "FETCH FAILED",
+    username: "FETCH FAILED",
+    password: "FETCH FAILED",
+    birthday: {day: "FETCH FAILED", month: "FETCH FAILED", year: "FETCH FAILED"},
+    email: "FETCH FAILED",
+    follows: 0,
 };

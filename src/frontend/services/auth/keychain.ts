@@ -12,3 +12,8 @@ export async function setAccessToken(token: string): Promise<void> {
 export async function clearAccessToken(): Promise<void> {
   await Keychain.resetGenericPassword({ service: "access-token" });
 }
+
+export async function getUserID(jwt : string): Promise<string> {
+  const userID = jwt.split('.')[1];
+  return userID ? JSON.parse(atob(userID)).sub : "NOIDFOUND";
+}

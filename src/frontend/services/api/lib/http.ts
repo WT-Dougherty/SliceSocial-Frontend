@@ -1,6 +1,7 @@
 import { API_BASE_URL, REQUEST_TIMEOUT_MS } from "../../config";
 import { getAccessToken } from "../../auth/keychain";
 import { RequestOptions } from "../types/request";
+import { sleep } from "../../../util/sleep";
 
 // this function is used to generate a request given passed request options
 //    it returns a promise of a response
@@ -71,8 +72,4 @@ function buildUrl(path: string, query?: RequestOptions["query"]): string {
     });
   }
   return url.toString();
-}
-// sleep for ms milliseconds
-function sleep(ms: number): Promise<void> {
-  return new Promise(function (resolve) { setTimeout(resolve, ms); });
 }

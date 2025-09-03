@@ -25,6 +25,7 @@ export async function apiCreateAccount(
             else {
                 const tokenBody : TokenBody = res;
                 setAccessToken(tokenBody.access_token);
+                console.log("Account Created");
                 rootNavigationRef.navigate('MainTabs', { screen: 'Profile' });
             }
         }).catch(e => console.log(e));

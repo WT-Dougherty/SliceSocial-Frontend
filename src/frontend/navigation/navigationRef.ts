@@ -14,10 +14,15 @@ type TabBarNavScreens = {
 };
 
 // root navigation
-type RootNavScreens = {
+export type RootNavScreens = {
     'Login' : undefined,
     'CreateAccount' : undefined,
     'MainTabs' : { screen?: keyof TabBarNavScreens; params?: object },
     'Settings' : undefined,
+    'SettingsChange' : {
+        attribute: string,
+        userID: string,
+        newValue: string,
+    },
 };
 export const rootNavigationRef = createNavigationContainerRef<RootNavScreens>();
