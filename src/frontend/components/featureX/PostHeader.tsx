@@ -1,23 +1,35 @@
 import * as React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { useCallback, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 import ProfileIcon from '../../assets/icons/ProfileIcon.tsx';
 
+import { apiGetProPic } from '../../services/api/endpoints/photos.ts';
+
 // type declarations
-import type { DateType } from '../../types/post.ts';
 type PostHeaderParams = {
+    userID: string,
     username: string,
-    date: DateType
+    date: string,
 };
 
 // component
-function PostHeader({ username, date } : PostHeaderParams ) {
-  const ProfilePhoto: string = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+function PostHeader({ username, date, userID } : PostHeaderParams ) {
+  const d = new Date(date);
+  const [propicURL, setPropicURL] = useState('');
+  useFocusEffect(
+    useCallback(() => {
+    async function fetchPropic() {
+      setPropicURL(await apiGetProPic(userID));
+    }
+    fetchPropic();
+  }, []));
   return (
     <View style={styles.postHeader} >
-      <ProfileIcon photoUri={ProfilePhoto} width={28} clr={'grey'} />
+      <ProfileIcon photoUri={propicURL} width={28} clr={'grey'} />
       <Text style={styles.username} >{username}</Text>
-      <Text style={styles.date} >{date.month + ' ' + date.day + ', ' + date.year}</Text>
+      <Text style={styles.date} >{d.getMonth() + ' ' + d.getDate() + ', ' + d.getFullYear()}</Text>
     </View>
   );
 }

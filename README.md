@@ -50,7 +50,7 @@ My goal in making this app is to demonstrate what a healthy form of social media
 
 ### Storage  
   - Relational DB for users, posts, comments, and relationships.  
-  - **MinIO** for profile pictures and future media (images, videos).  
+  - **AWS S3** for profile pictures and future media (images, videos).  
 
 ---
 

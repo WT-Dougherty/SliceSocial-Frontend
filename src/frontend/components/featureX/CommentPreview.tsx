@@ -7,7 +7,7 @@ import Comment from './Comment.tsx';
 // type declarations
 import type { PostType, CommentType } from '../../types/post.ts';
 type PostBodyParams = {
-    comments: Array<CommentType>
+    comments: CommentType[]
 };
 
 // components

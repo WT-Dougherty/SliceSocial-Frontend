@@ -17,6 +17,7 @@ import SettingsScreen from './frontend/screens/settings';
 import Login from './frontend/screens/login.tsx';
 import CreateAccount from './frontend/screens/createAccount.tsx';
 import SettingsChange from './frontend/screens/settingsChange.tsx';
+import PostViewer from './frontend/screens/postViewer.tsx';
 
 import { rootNavigationRef } from './frontend/navigation/navigationRef.ts';
 const Stack = createNativeStackNavigator<RootNavScreens>();
@@ -32,6 +33,7 @@ function App() {
             <Stack.Screen name={'MainTabs'} component={NavigationBar} />
             <Stack.Screen name={'Settings'} component={SettingsScreen} />
             <Stack.Screen name={'SettingsChange'} component={SettingsChange} />
+            <Stack.Screen name={'PostViewer'} component={PostViewer} />
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>

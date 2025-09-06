@@ -1,4 +1,8 @@
-import { DateType, PostType } from "./post"
+export interface DateType {
+    day: string,
+    month: string,
+    year: string,
+};
 
 // DB BlockSize: 8 bytes
 // profile ID: 16 char
@@ -16,6 +20,7 @@ export interface ProfileType {
     bio?: string,
 
     follows: number,
+    posts_count: number,
     follow_list?: Array<string>,
 };
 
@@ -26,4 +31,6 @@ export const EmptyProfile : ProfileType = {
     birthday: {day: "FETCH FAILED", month: "FETCH FAILED", year: "FETCH FAILED"},
     email: "FETCH FAILED",
     follows: 0,
+    posts_count: 0,
+    follow_list: ['FETCH', 'FAILED'],
 };

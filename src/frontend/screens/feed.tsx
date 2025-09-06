@@ -1,29 +1,24 @@
-import * as React from 'react'
+import { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import Post from '../components/common/post';
 
 // types
-import { PostType } from '../types/post';
-import { samplePost } from '../assets/SamplePosts';
-
-// sample posts
-let SAMPLE_POSTS: Array<PostType> = Array.from({ length: 3 }, (_, i) => ({
-    ...samplePost,
-    postID: i.toString()
-}));
+import { CommentType, PostType } from '../types/post';
 
 function FeedScreen() {
-    React.useEffect(() => {
-        console.log(SAMPLE_POSTS);
+    const [posts, setPosts] = useState<PostType[]>([]);
+    const [comments, setComments] = useState<CommentType[]>([]);
+    useEffect(() => {
+        console.log("");
     }, []);
 
     return (
         <BottomSheetModalProvider>
             <ScrollView style={styles.feed} >
-                { SAMPLE_POSTS.map((post : PostType) => (
-                    <Post post={post} key={post.postID} />
+                { posts.map((post : PostType) => (
+                    <Post post={post} image_url='' comments={comments} />
                 )) }
             </ScrollView>
         </BottomSheetModalProvider>

@@ -1,5 +1,7 @@
-import * as React from 'react'
+import { useCallback, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { Alert } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 // component imports
 import PostHeader from '../featureX/PostHeader.tsx';
@@ -8,20 +10,36 @@ import PostActivityBar from '../featureX/PostActivityBar.tsx';
 import CommentPreview from '../featureX/CommentPreview.tsx';
 
 // type declarations
-import { PostType, DateType } from '../../types/post.ts';
+import { CommentType, PostType } from '../../types/post.ts';
+import { apiGetPostPhoto } from '../../services/api/endpoints/photos.ts';
 type PostParams = {
-    post: PostType
+    post: PostType,
+    image_url: string,
+    comments: CommentType[]
 };
 
 // component
-function Post( { post } : PostParams ) {
-
+function Post( { post, comments } : PostParams ) {
+  const [IMAGEURL, setIMAGEURL] = useState('');
+  useFocusEffect(
+    useCallback(() => {
+    async function fetchImage() {
+      try {
+        const PostURL : string = await apiGetPostPhoto(post.postID);
+        setIMAGEURL(PostURL);
+      } catch (err) {
+        console.log("Error:", err instanceof Error ? err.message : err);
+        Alert.alert("Something went wrong while fetching pro-pic", err instanceof Error ? err.message : "Unknown error");
+      }
+    }
+    fetchImage()
+  }, []));
   return (
       <View style={styles.postStyle} >
-          <PostHeader username={post.username} date={post.date} />
-          <PostBody body={post.body} />
-          <PostActivityBar comments={post.comments}/>
-          <CommentPreview comments={post.comments.slice(-2)} />
+          <PostHeader username={post.username} date={post.posted_at} userID={post.userID} />
+          <PostBody image_url={IMAGEURL} />
+          <PostActivityBar comments={comments}/>
+          <CommentPreview comments={comments} />
           {/* Add More Parts Here */}
       </View>
   )

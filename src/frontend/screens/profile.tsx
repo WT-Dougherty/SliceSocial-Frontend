@@ -1,98 +1,84 @@
-import {View, Text, StyleSheet, Alert, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
-import { Button } from '@react-navigation/elements';
+import {View, Text, StyleSheet, Alert, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { rootNavigationRef } from '../navigation/navigationRef';
 import { getAccessToken, getUserID } from '../services/auth/keychain';
-import { apiGetProfile } from '../services/api/endpoints/getProfile';
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
+import { apiGetProfile } from '../services/api/endpoints/getProfile';
+import { apiGetPostPhoto, apiGetProPic } from '../services/api/endpoints/photos';
+
 import ProfileIcon from '../assets/icons/ProfileIcon'
 import { EmptyProfile, ProfileType } from '../types/profile';
-import { PostType } from '../types/post';
+import { CommentType, PostType } from '../types/post';
+import { apiGetUserPosts } from '../services/api/endpoints/posts';
 
 function ProfileScreen() {
-  const ProfilePhoto: string = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
-  const PostPhoto: string = 'https://www.meisterdrucke.ie/kunstwerke/1000px/Caspar%20David%20Friedrich%20-%20Der%20Wanderer%20ber%20dem%20Nebelmeer%20-%20(MeisterDrucke-680291).jpg';
+  const [profilePhoto, setProfilePhoto] = useState('');
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [postsURL, setPostsURL] = useState<string[]>([]);
+  const [postComments, setPostsComments] = useState<CommentType[]>([]);
   const [profile, setProfile] = useState<ProfileType>(EmptyProfile)
-  const [userPosts, setUserPosts] = useState<PostType[]>([]);
-  
-  // Mock posts for demonstration - replace with actual API call
-  const mockPosts: PostType[] = [
-    {
-      postID: "1",
-      username: profile.username,
-      date: { day: "15", month: "Dec", year: "2024" },
-      body: "Beautiful sunset today! 🌅",
-      likes: 42,
-      comments: []
-    },
-    {
-      postID: "2", 
-      username: profile.username,
-      date: { day: "14", month: "Dec", year: "2024" },
-      body: "Coffee and coding ☕️",
-      likes: 28,
-      comments: []
-    },
-    {
-      postID: "3",
-      username: profile.username,
-      date: { day: "13", month: "Dec", year: "2024" },
-      body: "Weekend vibes 🎉",
-      likes: 67,
-      comments: []
-    },
-    {
-      postID: "4",
-      username: profile.username,
-      date: { day: "12", month: "Dec", year: "2024" },
-      body: "New project coming soon! 🚀",
-      likes: 89,
-      comments: []
-    },
-    {
-      postID: "5",
-      username: profile.username,
-      date: { day: "11", month: "Dec", year: "2024" },
-      body: "Learning new things every day 📚",
-      likes: 34,
-      comments: []
-    },
-    {
-      postID: "6",
-      username: profile.username,
-      date: { day: "10", month: "Dec", year: "2024" },
-      body: "Great day with friends! 👥",
-      likes: 56,
-      comments: []
-    }
-  ];
     
   useFocusEffect(
     useCallback(() => {
-      async function fetchProfile() {
+      async function fetchScreen() {
         const jwt = await getAccessToken();
         const userID : string = await getUserID(jwt ? jwt : "NOIDFOUND");
+
+        // fetch profile information
         try {
           const res : ProfileType = await apiGetProfile(userID);
           setProfile(res);
-          // Set mock posts after profile is loaded
-          setUserPosts(mockPosts);
         } catch (err) {
           console.log("Error:", err instanceof Error ? err.message : err);
-          Alert.alert("Something went wrong", err instanceof Error ? err.message : "Unknown error");
+          Alert.alert("Something went wrong while fetching profile info", err instanceof Error ? err.message : "Unknown error");
         }
+
+        // fetch profile photo
+        try {
+          const proPicURL : string = await apiGetProPic(userID);
+          setProfilePhoto(proPicURL);
+        } catch (err) {
+          console.log("Error:", err instanceof Error ? err.message : err);
+          Alert.alert("Something went wrong while fetching pro-pic", err instanceof Error ? err.message : "Unknown error");
+        }
+
+        // fetch posts
+        try {
+          const posts : PostType[] = await apiGetUserPosts(userID);
+          setPosts(posts);
+        } catch (err) {
+          console.log("Error:", err instanceof Error ? err.message : err);
+          Alert.alert("Something went wrong while fetching posts", err instanceof Error ? err.message : "Unknown error");
+        }
+
+        // fetch posts photos
+        posts.forEach(async post => {
+          try {
+            const url : string = await apiGetPostPhoto(post.postID);
+            console.log("url: ", url);
+            setPostsURL(prevArray => [...prevArray, url]);
+          } catch (err) {
+            console.log("Error:", err instanceof Error ? err.message : err);
+            Alert.alert("Something went wrong while fetching posts", err instanceof Error ? err.message : "Unknown error");
+          }
+        });
+
       }
-      fetchProfile()
+      fetchScreen()
     }, [])
   );
 
   const renderPostGrid = () => {
     return (
       <View style={styles.postsGrid}>
-        {userPosts.map((post, index) => (
-          <TouchableOpacity key={post.postID} style={styles.postPreview}>
-            <Image style={styles.postPreviewImage} source={{ uri: PostPhoto }} />
+        {posts.map((post, index) => (
+          <TouchableOpacity
+          key={post.postID}
+          style={styles.postPreview}
+          onPress={() => rootNavigationRef.navigate("PostViewer", { post: post, url: postsURL[index], comments: postComments })}
+          >
+            <Image style={styles.postPreviewImage} source={{ uri: postsURL[index] }} />
           </TouchableOpacity>
         ))}
       </View>
@@ -105,11 +91,11 @@ function ProfileScreen() {
       <View style={styles.profileHeader}>
         <View style={styles.profileInfo}>
           <View style={styles.photoContainer}>
-            <ProfileIcon photoUri={profile.profilePicture || ProfilePhoto} width={100} clr={'grey'} />
+            <ProfileIcon photoUri={profilePhoto} width={100} clr={'grey'} />
           </View>
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
-              <Text style={styles.statNumber}>{userPosts.length}</Text>
+              <Text style={styles.statNumber}>{posts.length}</Text>
               <Text style={styles.statLabel}>Posts</Text>
             </View>
             <View style={styles.statItem}>

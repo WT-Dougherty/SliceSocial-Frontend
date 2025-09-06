@@ -1,9 +1,8 @@
 import { request } from "../lib/http"
-import { Alert } from "react-native"
 
 // type imports
 import { HttpMethod, RequestOptions } from "../types/request"
-import { EmptyProfile, ProfileType } from "../../../types/profile";
+import { ProfileType } from "../../../types/profile";
 
 export async function apiGetProfile(userID : string) : Promise<ProfileType> {
     let getErr: unknown;

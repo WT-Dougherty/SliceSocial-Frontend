@@ -2,19 +2,19 @@ import * as React from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 
 // type declarations
-import type { CommentType, DateType } from '../../types/post.ts';
+import type { CommentType } from '../../types/post.ts';
 type CommentParams = {
     comment: CommentType
 };
 
 function Comment({ comment } : CommentParams) {
-    const date : DateType = comment.date;
+    const date : Date = new Date(comment.date);
     
     return (
         <View style={styles.comment} >
             <View style={styles.header} >
                 <Text style={styles.username} >{comment.username}</Text>
-                <Text style={styles.date} >{date.month + ' ' + date.day + ', ' + date.year}</Text>
+                <Text style={styles.date} >{date.getMonth() + ' ' + date.getDay() + ', ' + date.getFullYear()}</Text>
             </View>
             <Text style={styles.body} >{comment.body}</Text>
         </View>

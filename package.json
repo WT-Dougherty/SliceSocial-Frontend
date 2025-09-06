@@ -30,6 +30,7 @@
     "react-native-svg": "^15.12.1",
     "react-native-svg-transformer": "^1.5.1",
     "react-native-vector-icons": "^10.3.0",
+    "react-native-vision-camera": "^2.16.8",
     "react-native-worklets": "^0.4.1"
   },
   "devDependencies": {

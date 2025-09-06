@@ -1,4 +1,5 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
+import { CommentType, PostType } from '../types/post';
 
 // tab bar navigation
 export const feedName : string = 'Feed';
@@ -23,6 +24,11 @@ export type RootNavScreens = {
         attribute: string,
         userID: string,
         newValue: string,
+    },
+    'PostViewer' : {
+        post: PostType,
+        url: string,
+        comments: CommentType[],
     },
 };
 export const rootNavigationRef = createNavigationContainerRef<RootNavScreens>();

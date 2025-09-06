@@ -3,14 +3,14 @@ import { View, Image, Text, StyleSheet } from 'react-native';
 
 // type declarations
 type PostBodyParams = {
-    body: string
+    image_url: string
 };
 
 // components
-function PostBody({ body } : PostBodyParams ) {
+function PostBody({ image_url } : PostBodyParams ) {
     return (
         <View style={styles.postBody} >
-            <Image style={styles.image} source={{ uri: body }} />
+            <Image style={styles.image} source={{ uri: image_url }} />
         </View>
     )
 }
