@@ -2,13 +2,11 @@ import { request } from '../lib/http';
 
 // type imports
 import { HttpMethod, RequestOptions } from '../types/request';
-import { ProfileType } from '../../../types/profile';
 
-export async function apiGetProfile(userID: string): Promise<ProfileType> {
-  let getErr: unknown;
+export async function apiGetFriends(userID: string): Promise<string[]> {
   const requestOptions: RequestOptions = {
     method: 'GET' as HttpMethod,
-    path: '/users/',
+    path: '/connections/',
     query: { userID: userID },
   };
 
@@ -19,7 +17,7 @@ export async function apiGetProfile(userID: string): Promise<ProfileType> {
       `GET /users/ failed: ${response.status} ${response.statusText} ${text}`,
     );
   }
-  const data = (await response.json()) as ProfileType;
-  console.log('Profile Fetched');
+  const data = (await response.json()) as string[];
+  console.log('Friends Fetched');
   return data;
 }

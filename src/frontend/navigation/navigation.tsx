@@ -1,6 +1,6 @@
 // general
 import { StyleSheet } from 'react-native';
-import * as React from 'react'
+import * as React from 'react';
 import { BlurView } from '@react-native-community/blur';
 
 // navigation and react markups
@@ -27,20 +27,21 @@ import { profileName } from './navigationRef.ts';
 const Tab = createBottomTabNavigator();
 
 export function NavigationBar() {
-  const ProfilePhoto: string = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
-    return (
-      <Tab.Navigator
+  const ProfilePhoto: string =
+    'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+  return (
+    <Tab.Navigator
       initialRouteName={feedName}
-      screenOptions={({route}) => ({
+      screenOptions={({ route }) => ({
         header: () => <AppHeader />,
         headerShown: true,
         headerTransparent: true,
         tabBarShowLabel: false,
-        tabBarIconStyle: {marginTop: 8},
-        tabBarActiveTintColor: "black",
-        tabBarInactiveTintColor: "grey",
+        tabBarIconStyle: { marginTop: 8 },
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'grey',
         tabBarIcon: ({ color, size }) => {
-          const iconProps = { width: size, height: size, color: color }
+          const iconProps = { width: size, height: size, color: color };
           switch (route.name) {
             case feedName:
               return <FeedIcon {...iconProps} />;
@@ -49,7 +50,9 @@ export function NavigationBar() {
             case addPostName:
               return <AddPostIcon {...iconProps} />;
             case profileName:
-              return <ProfileIcon width={size} clr={color} photoUri={ProfilePhoto} />;
+              return (
+                <ProfileIcon width={size} clr={color} photoUri={ProfilePhoto} />
+              );
           }
         },
         tabBarStyle: {
@@ -60,20 +63,21 @@ export function NavigationBar() {
           <BlurView blurType="materialLight" style={styles.bars} />
         ),
       })}
-      >
-        <Tab.Screen name={feedName} component={FeedScreen} />
-        <Tab.Screen name={addFriendsName} component={AddFriendsScreen} />
-        <Tab.Screen name={addPostName} component={AddPostScreen} />
-        <Tab.Screen name={profileName} component={ProfileScreen} />
-      </Tab.Navigator>
-    );
+    >
+      <Tab.Screen
+        name={feedName}
+        component={FeedScreen}
+        // options={{ freezeOnBlur: true }}
+      />
+      <Tab.Screen name={addFriendsName} component={AddFriendsScreen} />
+      <Tab.Screen name={addPostName} component={AddPostScreen} />
+      <Tab.Screen name={profileName} component={ProfileScreen} />
+    </Tab.Navigator>
+  );
 }
 
 function AppHeader() {
-  return (
-    <BlurView blurType='materialLight' style={styles.bars} >
-    </BlurView>
-  )
+  return <BlurView blurType="materialLight" style={styles.bars}></BlurView>;
 }
 
 const styles = StyleSheet.create({
@@ -83,4 +87,4 @@ const styles = StyleSheet.create({
     height: 80,
     borderBottomWidth: 0,
   },
-})
+});
