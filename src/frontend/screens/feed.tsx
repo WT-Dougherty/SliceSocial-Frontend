@@ -11,12 +11,13 @@ import { apiGetPostPhoto } from '../services/api/endpoints/photos';
 
 // types
 import { CommentType, PostType } from '../types/post';
+import { apiGetPostComments } from '../services/api/endpoints/comments';
 
 function FeedScreen() {
   const [friends, setFriends] = useState<string[]>([]);
   const [postsURL, setPostsURL] = useState<string[]>([]);
   const [posts, setPosts] = useState<PostType[]>([]);
-  const [comments, setComments] = useState<CommentType[]>([]);
+  const [postComments, setPostComments] = useState<CommentType[][]>([[]]);
   useFocusEffect(
     useCallback(() => {
       let alive = true;
@@ -50,6 +51,13 @@ function FeedScreen() {
           );
           if (!alive) return;
           setPostsURL(urls);
+
+          // post comments
+          const comments = await Promise.all(
+            allPosts.map(p => apiGetPostComments(p.postID)),
+          );
+          if (!alive) return;
+          setPostComments(comments);
         } catch (err) {
           console.log('Feed fetch error:', err);
         }
@@ -70,7 +78,7 @@ function FeedScreen() {
             key={post.postID}
             post={post}
             image_url={postsURL[index]}
-            comments={comments}
+            comments={postComments[index]}
           />
         ))}
       </ScrollView>

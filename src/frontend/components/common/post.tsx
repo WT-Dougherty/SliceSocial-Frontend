@@ -11,7 +11,6 @@ import CommentPreview from '../featureX/CommentPreview.tsx';
 
 // type declarations
 import { CommentType, PostType } from '../../types/post.ts';
-import { apiGetPostPhoto } from '../../services/api/endpoints/photos.ts';
 type PostParams = {
   post: PostType;
   image_url: string;
@@ -30,14 +29,13 @@ function Post({ post, image_url, comments }: PostParams) {
       <PostBody image_url={image_url} />
       <PostActivityBar comments={comments} />
       <Caption username={post.username} caption={post.caption} />
-      <CommentPreview comments={comments} />
+      <CommentPreview comments={comments} postID={post.postID} />
       {/* Add More Parts Here */}
     </View>
   );
 }
 
 function Caption({ username, caption }: { username: string; caption: string }) {
-  console.log(caption);
   return (
     <View style={styles.captionContainer}>
       <Text style={styles.captionText}>

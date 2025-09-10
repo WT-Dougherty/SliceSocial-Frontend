@@ -62,12 +62,12 @@ function ProfileScreen() {
 
         // fetch posts and post images
         try {
-          const posts: PostType[] = await apiGetUserPosts(userID);
-          setPosts(posts);
-
           if (postsURL.length !== 0) {
             return;
           }
+          const new_posts: PostType[] = await apiGetUserPosts(userID);
+          setPosts(new_posts);
+
           setPostsURL([]);
 
           const urls = await Promise.all(
@@ -86,7 +86,6 @@ function ProfileScreen() {
       fetchScreen();
     }, []),
   );
-
   const renderPostGrid = () => {
     return (
       <View style={styles.postsGrid}>

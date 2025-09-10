@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,22 +9,58 @@ import {
 
 // component import
 import Comment from './Comment.tsx';
+import { apiPostNewComment } from '../../services/api/endpoints/comments.ts';
 
 // type declarations
 import type { PostType, CommentType } from '../../types/post.ts';
+import { apiGetUsername } from '../../services/api/endpoints/users.ts';
+import { getAccessToken, getUserID } from '../../services/auth/keychain.ts';
+import { sleep } from '../../util/sleep.ts';
 type PostBodyParams = {
   comments: CommentType[];
+  postID: string;
 };
 
 // components
 // takes an array of 3 comments as input
-function CommentPreview({ comments }: PostBodyParams) {
-  const [commentText, setCommentText] = React.useState<string>('');
+function CommentPreview({ comments, postID }: PostBodyParams) {
+  const [commentText, setCommentText] = useState('');
+  const [username, setUsername] = useState('');
 
-  function handleSubmit() {
+  const [submitColor, setSubmitColor] = useState('#1a73e8');
+  const [toggleOff, setToggleOff] = useState(false);
+
+  useEffect(() => {
+    async function getUsername() {
+      const userID = await getUserID((await getAccessToken()) ?? '');
+      apiGetUsername(userID)
+        .then(res => {
+          setUsername(res);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+    getUsername();
+  }, []);
+
+  async function handleSubmit() {
     if (!commentText.trim()) return;
-    // TODO: wire up to submit handler/API in the parent when available
-    console.log('Submit comment:', commentText);
+    const res = await apiPostNewComment({
+      postID: postID,
+      username: username,
+      comment: commentText,
+    });
+    console.log(res);
+    setToggleOff(true);
+    if (res !== 201) {
+      setSubmitColor('red');
+    } else {
+      setSubmitColor('green');
+    }
+    await sleep(2000);
+    setSubmitColor('#1a73e8');
+    setToggleOff(false);
     setCommentText('');
   }
   return (
@@ -41,7 +77,9 @@ function CommentPreview({ comments }: PostBodyParams) {
         <TouchableOpacity
           style={[
             styles.postButton,
-            !commentText.trim() && styles.postButtonDisabled,
+            commentText.trim() || toggleOff
+              ? { backgroundColor: submitColor }
+              : styles.postButtonDisabled,
           ]}
           onPress={handleSubmit}
           disabled={!commentText.trim()}
@@ -81,7 +119,6 @@ const styles = StyleSheet.create({
   postButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    backgroundColor: '#1a73e8',
     borderRadius: 14,
   },
   postButtonDisabled: {
